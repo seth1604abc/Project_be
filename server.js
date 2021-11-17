@@ -35,6 +35,10 @@ app.use("/gift", giftRouter);
 const memberRouter = require("./router/Member");
 app.use("/member", memberRouter);
 
+//商品相關路由(啟學新增)
+const productRouter = require("./router/Product");
+app.use("/product", productRouter);
+
 app.listen(3001, () => {
   console.log("Server is listening at Port 3001");
 });
