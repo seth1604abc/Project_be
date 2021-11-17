@@ -11,7 +11,6 @@ router.get("/", async (req, res) => {
 
 //取得top 3熱銷商品
 router.get("/hot-product", async (req, res) => {
-  let id = req.session.userId;
   let result = await con.queryAsync(
     "SELECT * FROM product ORDER BY sold DESC LIMIT 3"
   );
