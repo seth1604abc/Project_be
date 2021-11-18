@@ -17,6 +17,14 @@ router.get("/hot-product", async (req, res) => {
   res.json(result);
 });
 
+//取得特定商品
+router.get("/:id", async (req, res) => {
+  let result = await con.queryAsync(
+    "SELECT * FROM product WHERE id=?;",[req.params.id]
+  );
+  res.json(result);
+});
+
 //取得營養品
 router.get("/supplements", async (req, res) => {
   let id = req.session.userId;
