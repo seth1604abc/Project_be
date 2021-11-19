@@ -96,4 +96,10 @@ router.get("/equipment/leg", async (req, res) => {
   res.json(result);
 });
 
+//商品單獨頁
+router.get("/single/:id",async(req,res)=>{
+  let id= req.params.id
+  console.log(id);
+})
+
 module.exports = router;
