@@ -7,8 +7,9 @@ require("dotenv").config();
 router.get("/", async (req, res) => {
   let result = await con.queryAsync("SELECT course.*,body_part.name as body_part_id FROM course JOIN body_part ON course.body_part_id = body_part.id")
   if(result) {
-        result[0].upload_time = moment(result[0].upload_time).format('YYYY-MM-DD');
-        result[1].upload_time = moment(result[1].upload_time).format('YYYY-MM-DD');
+    for(let i=0; i<result.length; i++){
+      result[i].upload_time = moment(result[i].upload_time).format('YYYY-MM-DD');
+    }
     }   
     res.json(result)
 });
