@@ -23,7 +23,7 @@ router.post('/register', async (req, res) => {
     const registerData = req.body;    
     try {
         let password = await bcrypt.hash(registerData.password, 10);        
-        let result = await con.queryAsync("INSERT INTO user (first_name, last_name, birth, email, password, phone, address) VALUES (?,?,?,?,?,?,?)", [registerData.firstName, registerData.lastName, registerData.birth, registerData.email, password, registerData.phone, registerData.totalAddress,]);               
+        let result = await con.queryAsync("INSERT INTO user (first_name, last_name, birth, email, password, phone, address, city, area) VALUES (?,?,?,?,?,?,?,?,?)", [registerData.firstName, registerData.lastName, registerData.birth, registerData.email, password, registerData.phone, registerData.address,registerData.city,registerData.area]);               
         res.json({code: 0})
     } catch (e){
         res.json({message: e})
