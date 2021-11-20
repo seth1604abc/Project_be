@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const { connection } = require("./utilities/db");
 
+
 app.use(
   cors({
     origin: ["http://localhost:3000"],
