@@ -3,7 +3,6 @@ const app = express()
 const cors = require('cors')
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
-const bodyParser = require('body-parser')
 require('dotenv').config()
 
 app.use(
@@ -20,8 +19,9 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 2, //存在兩小        
     }
 }))
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 
 //設置後端路由
 const userRouter = require('./router/User')
