@@ -6,7 +6,6 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const { connection } = require("./utilities/db");
-require("dotenv").config();
 
 app.use(
   cors({
@@ -38,6 +37,9 @@ app.use("/member", memberRouter);
 //商品相關路由(啟學新增)
 const productRouter = require("./router/Product");
 app.use("/product", productRouter);
+//課程相關路由(緯宸新增)
+const courseRouter = require('./router/Course')
+app.use("/course", courseRouter)
 
 app.listen(3001, () => {
   console.log("Server is listening at Port 3001");
