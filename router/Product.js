@@ -5,10 +5,15 @@ const router = express.Router();
 //取得所有商品
 router.get("/", async (req, res) => {
   let id = req.session.userId;
-  let result = await con.queryAsync("SELECT * FROM product");
+  let result = await con.queryAsync("SELECT * FROM product INNER JOIN product_images ON product.id = product_images.product_id WHERE is_main=1");
   res.json(result);
 });
 //取得所有商品主圖片
+router.get("/images", async (req, res) => {
+  let productImg=await con.queryAsync("SELECT * FROM product_images WHERE is_main=1");
+  res.json(productImg);
+});
+//取得特定商品主圖片
 router.get("/images/:productId", async (req, res) => {
   let productImg=await con.queryAsync("SELECT * FROM product_images WHERE is_main=1 AND product_id=?",[req.params.productId]);
   res.json(productImg);
@@ -23,13 +28,20 @@ router.get("/recommand-product/:category", async (req, res) => {
   res.json(result);
 });
 
-//取得top 3熱銷商品
+//主頁取得top 3熱銷商品資料+照片
 router.get("/hot-product", async (req, res) => {
   let result = await con.queryAsync(
-    "SELECT * FROM product ORDER BY sold DESC LIMIT 3"
+    "SELECT * FROM product INNER JOIN product_images ON product.id = product_images.product_id WHERE is_main=1 ORDER BY sold DESC LIMIT 3"
   );
   res.json(result);
 });
+//取得top 3熱銷商品
+// router.get("/hot-product", async (req, res) => {
+//   let result = await con.queryAsync(
+//     "SELECT * FROM product ORDER BY sold DESC LIMIT 3"
+//   );
+//   res.json(result);
+// });
 
 //取得特定商品
 router.get("/:id", async (req, res) => {
