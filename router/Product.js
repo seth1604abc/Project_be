@@ -9,6 +9,14 @@ router.get("/", async (req, res) => {
   res.json(result);
 });
 
+//取得三個相關類別的熱門商品
+router.get("/recommand-product/:category", async (req, res) => {
+  let result = await con.queryAsync(
+    "SELECT * FROM product WHERE product_type_id=? ORDER BY sold DESC LIMIT 3",[req.params.category]
+  );
+  res.json(result);
+});
+
 //取得top 3熱銷商品
 router.get("/hot-product", async (req, res) => {
   let result = await con.queryAsync(
