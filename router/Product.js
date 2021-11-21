@@ -8,6 +8,12 @@ router.get("/", async (req, res) => {
   let result = await con.queryAsync("SELECT * FROM product");
   res.json(result);
 });
+//取得所有商品主圖片
+router.get("/images/:productId", async (req, res) => {
+  let productImg=await con.queryAsync("SELECT * FROM product_images WHERE is_main=1 AND product_id=?",[req.params.productId]);
+  res.json(productImg);
+});
+
 
 //取得三個相關類別的熱門商品
 router.get("/recommand-product/:category", async (req, res) => {
