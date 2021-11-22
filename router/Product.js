@@ -5,7 +5,7 @@ const router = express.Router();
 //取得所有商品
 router.get("/", async (req, res) => {
   let id = req.session.userId;
-  let result = await con.queryAsync("SELECT * FROM product_images INNER product JOIN  ON product.id = product_images.product_id WHERE is_main=1");
+  let result = await con.queryAsync("SELECT * FROM product_images INNER JOIN product ON product.id = product_images.product_id WHERE is_main=1");
   res.json(result);
 });
 //取得所有商品主圖片
