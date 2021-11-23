@@ -18,30 +18,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- 資料庫: `project-pb`
+-- 資料庫: `project_pb`
 --
 
 -- --------------------------------------------------------
-
---
--- 資料表結構 `event`
---
-
-CREATE TABLE `event` (
-  `id` int(11) NOT NULL,
-  `title` varchar(45) NOT NULL,
-  `datetime` datetime NOT NULL,
-  `deadline` datetime NOT NULL,
-  `limit` int(11) NOT NULL,
-  `location` varchar(45) NOT NULL,
-  `content` varchar(1000) DEFAULT NULL,
-  `image` varchar(45) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- 傾印資料表的資料 `event`
---
 
 INSERT INTO `event` (`id`, `title`, `datetime`, `deadline`, `limit`, `location`, `content`, `image`, `user_id`) VALUES
 (1, '科學增肌減脂-Dr.史考特來解惑', '2021-11-19 21:58:25', '2021-11-19 21:58:25', 25, '台北市大安區羅斯福路二段33號12樓', 'Dr.史考特認為「肥胖是一種內分泌失調」，也就是飲食選擇失當導致胰島素過度分泌，而使身體累積脂肪的胰島素假說。但隨著數篇最新研究出爐，目光逐漸從胰島素身上移開。\r\n過去寫作中引用的研究仍有參考價值，但隨著科學巨輪的推動，Dr.史考特對它們有了更新的解讀。\r\n　　閱讀最新科學研究，並將其轉化為容易吸收的文字與影音，是「一分鐘健身教室」從第一天就在做的事情。科學改善了人類生活的所有面向，飲食運動也不該例外。\r\n　　健身不只是強健身體，健身更要強健大腦。', 'w644.jpg', 0),
