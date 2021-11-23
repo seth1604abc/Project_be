@@ -2,6 +2,7 @@
 const express = require('express');
 const con = require('../utilities/db');
 const router = express.Router();
+require("dotenv").config();
 
 // router.get('/coach-event-add', async (req, res)=>{
 //     console.log(req.body); 
@@ -21,7 +22,5 @@ router.get('/coach-event-add', async (req, res)=>{
     let result = await con.queryAsync ('SELECT * FROM event')
     res.json(result);
 })
-
-
 
 module.exports = router;
