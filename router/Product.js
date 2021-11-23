@@ -95,5 +95,10 @@ router.get("/comments/:productId",async(req,res)=>{
   let result=await con.queryAsync("SELECT * FROM product_comment INNER JOIN user ON product_comment.user_id=user.id WHERE product_id=? ORDER BY created_at ASC",[req.params.productId])
   res.json(result);
 })
+//商品單獨頁文章
+router.get("/article/:bodypart",async(req,res)=>{
+  let result=await con.queryAsync("SELECT * FROM article INNER JOIN user ON article.user_id=user.id WHERE body_part=? ORDER BY created_at ASC",[req.params.bodypart])
+  res.json(result);
+})
 
 module.exports = router;
