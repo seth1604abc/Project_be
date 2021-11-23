@@ -56,7 +56,7 @@ router.post('/login', async (req, res) => {
 })
 
 router.post("/logout", (req, res) => {
-    req.session = null;  
+    req.session.userId = null;  
 })
 
 module.exports = router
