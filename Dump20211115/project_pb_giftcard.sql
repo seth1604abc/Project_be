@@ -27,7 +27,7 @@ CREATE TABLE `giftcard` (
   `code` varchar(45) NOT NULL,
   `is_used` int NOT NULL DEFAULT '1',
   `usable_email` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

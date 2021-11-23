@@ -1,57 +1,54 @@
--- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
+-- phpMyAdmin SQL Dump
+-- version 5.1.1
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost    Database: project_pb
--- ------------------------------------------------------
--- Server version	8.0.26
+-- 主機： 127.0.0.1
+-- 產生時間： 2021-11-20 10:27:21
+-- 伺服器版本： 10.4.20-MariaDB
+-- PHP 版本： 8.0.9
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Table structure for table `event`
+-- 資料庫: `project_pb`
 --
 
-DROP TABLE IF EXISTS `event`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `event` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(45) NOT NULL,
-  `datetime` datetime NOT NULL,
-  `user_id` int NOT NULL,
-  `location` varchar(45) NOT NULL,
-  `limit` int NOT NULL,
-  `image` varchar(45) NOT NULL,
-  `content` varchar(1000) NOT NULL,
-  `deadline` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- --------------------------------------------------------
+
+INSERT INTO `event` (`id`, `title`, `datetime`, `deadline`, `limit`, `location`, `content`, `image`, `user_id`) VALUES
+(1, '科學增肌減脂-Dr.史考特來解惑', '2021-11-19 21:58:25', '2021-11-19 21:58:25', 25, '台北市大安區羅斯福路二段33號12樓', 'Dr.史考特認為「肥胖是一種內分泌失調」，也就是飲食選擇失當導致胰島素過度分泌，而使身體累積脂肪的胰島素假說。但隨著數篇最新研究出爐，目光逐漸從胰島素身上移開。\r\n過去寫作中引用的研究仍有參考價值，但隨著科學巨輪的推動，Dr.史考特對它們有了更新的解讀。\r\n　　閱讀最新科學研究，並將其轉化為容易吸收的文字與影音，是「一分鐘健身教室」從第一天就在做的事情。科學改善了人類生活的所有面向，飲食運動也不該例外。\r\n　　健身不只是強健身體，健身更要強健大腦。', 'w644.jpg', 0),
+(2, '打破健身舊觀念 運動營養新觀點一次搞懂', '2021-11-20 22:00:26', '2021-11-19 22:00:26', 30, '台北市中山區松江路131號7樓之1', '', 'w644.jpg', 0),
+(3, '營養師的獨家外食指南', '2021-11-21 14:00:26', '2021-11-19 23:59:26', 20, '台北市中正區齊東街57號1樓', '', 'w644.jpg', 0);
 
 --
--- Dumping data for table `event`
+-- 已傾印資料表的索引
 --
 
-LOCK TABLES `event` WRITE;
-/*!40000 ALTER TABLE `event` DISABLE KEYS */;
-/*!40000 ALTER TABLE `event` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+--
+-- 資料表索引 `event`
+--
+ALTER TABLE `event`
+  ADD PRIMARY KEY (`id`);
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+--
+-- 在傾印的資料表使用自動遞增(AUTO_INCREMENT)
+--
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `event`
+--
+ALTER TABLE `event`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2021-11-15 13:26:53
