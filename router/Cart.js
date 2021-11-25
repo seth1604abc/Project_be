@@ -12,6 +12,13 @@ router.post("/addcart/:productId/", async (req, res) => {
     );
     res.json(result);
   });
+router.get("/list", async (req, res) => {
+    let id = req.session.userId;
+    let result = await con.queryAsync(
+      "SELECT * FROM cart INNER JOIN product ON cart.product_id=product.id INNER JOIN product_images ON product.id=product_images.product_id WHERE is_main=1 AND user_id=1"
+    );
+    res.json(result);
+  });
 
 
 
