@@ -35,10 +35,11 @@ router.get("/hot-product", async (req, res) => {
   );
   res.json(result);
 });
-//取得top 3熱銷商品
-// router.get("/hot-product", async (req, res) => {
+
+//搜尋商品名稱
+// router.get("/search/:input", async (req, res) => {
 //   let result = await con.queryAsync(
-//     "SELECT * FROM product ORDER BY sold DESC LIMIT 3"
+//     "SELECT * FROM product INNER JOIN product_images ON product.id = product_images.product_id WHERE ",[req.params.category,req.params.productId]
 //   );
 //   res.json(result);
 // });
