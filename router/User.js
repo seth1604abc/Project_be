@@ -29,11 +29,18 @@ router.post('/register', async (req, res) => {
         res.json({message: e})
     }          
 })
-router.get('/login', (req, res) => {
+router.get('/login', async (req, res) => {
     if(req.session.userId) {
-        res.json({userId: req.session.userId});
-    } else {
-        res.json({message: "you should log in"});
+        let result = await con.queryAsync("SELECT role FROM user WHERE id=?", [req.session.userId]);
+        
+        switch (result[0].role){
+            case 1:
+                res.json({userId: req.session.userId, role: "會員中心", url: "/member-info"});
+                break;
+            case 2:
+                res.json({userId: req.session.userId, role: "教練中心", url: "/coach-info"});
+        }
+        
     }
     
 })
@@ -55,8 +62,9 @@ router.post('/login', async (req, res) => {
     }
 })
 
-router.post("/logout", (req, res) => {
-    req.session.userId = null;  
+router.get("/logout", (req, res) => {
+    req.session.userId = null;
+    res.send("登出");      
 })
 
 module.exports = router
