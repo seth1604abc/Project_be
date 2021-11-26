@@ -31,6 +31,7 @@ const userRouter = require("./router/User");
 app.use("/auth", userRouter);
 const giftRouter = require("./router/GiftCard");
 app.use("/gift", giftRouter);
+
 const memberRouter = require("./router/Member");
 app.use("/member", memberRouter);
 
