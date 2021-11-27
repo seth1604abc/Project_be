@@ -13,6 +13,7 @@ router.post("/addcart/:productId/", async (req, res) => {
   );
   res.json(result);
 });
+//拿購物車親但
 router.get("/list", async (req, res) => {
   let id = req.session.userId;
   let result = await con.queryAsync(
@@ -21,6 +22,15 @@ router.get("/list", async (req, res) => {
   res.json(result);
 });
 
+//更新購物車清單
+router.patch("/list/:productId/:amount", async (req, res) => {
+  let id = req.session.userId;
+  let result = await con.queryAsync(
+    "UPDATE cart SET amount=? WHERE product_id=? AND user_id=1",[req.params.amount,req.params.productId]
+  );
+  res.json(result);
+});
+//刪除單一商品
 router.delete("/delete/:productId", async (req, res) => {
   let id = req.session.userId;
   let result = await con.queryAsync(
@@ -29,6 +39,8 @@ router.delete("/delete/:productId", async (req, res) => {
   );
   res.json(result);
 });
+
+//多選刪除
 router.delete("/delete-selected", async (req, res) => {
   let id = req.session.userId;
   let data = req.body.items;
