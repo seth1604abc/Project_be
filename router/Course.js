@@ -72,4 +72,20 @@ router.get("/hitCourse", async (req, res) => {
   res.json(hitCourse);
 });
 
+router.post("/changeLikesCount", async (req, res) => {
+  let likes =req.body.like
+  let id = req.body.id
+  let addComment = await con.queryAsync("UPDATE course SET likes=? WHERE id=?",[likes,id]);
+  res.json('更改數字了');
+});
+
+router.post("/addLikeList", async (req, res) => {
+  let course =req.body.course
+  let id = req.session.userId
+  console.log(course,id)
+  let addComment = await con.queryAsync("INSERT INTO course_list (course_id,user_id) VALUES (?,?)",[course,id]);
+  res.json('更改數字了');
+});
+
+
 module.exports = router;
