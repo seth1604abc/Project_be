@@ -19,18 +19,19 @@ const storage = multer.diskStorage({
 })
 const imageUpload = multer({ storage: storage });
 //檢查是否登入
-router.use(loginCheckMiddleware);
+// router.use(loginCheckMiddleware);
 
 router.get("/info", async (req, res) => {
-    let id = req.session.userId;
+    let id = "1";
+    // let id = req.session.userId;
     let result = await con.queryAsync("SELECT * FROM user WHERE id=?", [id]);
-    if (result) {
-        result[0].birth = await moment(result[0].birth).format('YYYY-MM-DD');
-        if (result[0].endtime != null) {
-            result[0].endtime = await moment(result[0].endtime).format('YYYY-MM-DD');
-        }
+    // if (result) {
+    //     result[0].birth = await moment(result[0].birth).format('YYYY-MM-DD');
+    //     if (result[0].endtime != null) {
+    //         result[0].endtime = await moment(result[0].endtime).format('YYYY-MM-DD');
+    //     }
 
-    }
+    // }
     res.send(result);
 })
 
