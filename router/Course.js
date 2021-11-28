@@ -59,7 +59,7 @@ router.post("/addComment", async (req, res) => {
 
 router.post("/addChildrenComment", async (req, res) => {
   let text =req.body.text
-  let user_id =req.body.user_id
+  let user_id =req.session.userId
   let course_comment_id =req.body.course_comment_id
   let created_at =req.body.created_at
   console.log(req.body)
@@ -82,10 +82,25 @@ router.post("/changeLikesCount", async (req, res) => {
 router.post("/addLikeList", async (req, res) => {
   let course =req.body.course
   let id = req.session.userId
-  console.log(course,id)
   let addComment = await con.queryAsync("INSERT INTO course_list (course_id,user_id) VALUES (?,?)",[course,id]);
   res.json('更改數字了');
 });
 
+router.post("/deleteLikeList", async (req, res) => {
+  let course =req.body.course
+  let id = req.session.userId
+  let addComment = await con.queryAsync("DELETE FROM course_list WHERE course_id=? && user_id=?",[course,id]);
+  res.json('更改數字了');
+});
+
+router.get('/isLikeList',async (req,res)=>{
+  let LikeList = await con.queryAsync('SELECT * FROM course_list')
+  res.json(LikeList)
+})
+
+router.get('/isLikeListMemberId',async (req,res)=>{
+  let theUser = req.session.userId
+  res.json(theUser)
+})
 
 module.exports = router;
