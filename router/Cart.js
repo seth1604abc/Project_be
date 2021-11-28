@@ -30,6 +30,16 @@ router.patch("/list/:productId/:amount", async (req, res) => {
   );
   res.json(result);
 });
+
+//更新購物車清單(當商品已經在購物車)
+router.patch("/update/:productId/:amount", async (req, res) => {
+  let id = req.session.userId;
+  let result = await con.queryAsync(
+    "UPDATE cart SET amount=amount+? WHERE product_id=? AND user_id=1",[req.params.amount,req.params.productId]
+  );
+  res.json(result);
+});
+
 //刪除單一商品
 router.delete("/delete/:productId", async (req, res) => {
   let id = req.session.userId;
