@@ -3,6 +3,7 @@ const con = require("../utilities/db");
 const router = express.Router();
 var axios = require('axios');
 var qs = require('qs');
+const cheerio = require('cheerio');
 
 //加入購物車
 router.post("/addcart/:productId/", async (req, res) => {
@@ -100,8 +101,8 @@ let config = {
 
 axios(config)
 .then(function (response) {
-  console.log(JSON.parse(JSON.stringify(response.data)));
-  res.json(response.data)
+  console.log(JSON.stringify(response.data));
+  res.json(JSON.stringify(response.data))
 })
 .catch(function (error) {
   console.log(error);
