@@ -1,6 +1,8 @@
 const express = require("express");
 const con = require("../utilities/db");
 const router = express.Router();
+var axios = require('axios');
+var qs = require('qs');
 
 //加入購物車
 router.post("/addcart/:productId/", async (req, res) => {
@@ -77,5 +79,36 @@ router.post("/add-order",async(req,res)=>{
   res.json(result);
 });
 
+//便利商店
+router.post("/mart",async(req,res)=>{
+  let id = req.session.userId;
+  let body=req.body;
+  
+let data = qs.stringify({
+  'commandid': 'SearchStore',
+  'city': `${body.city}`,
+  'town': `${body.area}`
+});
+let config = {
+  method: 'post',
+  url: 'http://emap.pcsc.com.tw/EMapSDK.aspx',
+  headers: { 
+    'Content-Type': 'application/x-www-form-urlencoded', 
+  },
+  data : data
+};
+
+axios(config)
+.then(function (response) {
+  console.log(JSON.parse(JSON.stringify(response.data)));
+  res.json(response.data)
+})
+.catch(function (error) {
+  console.log(error);
+});
+      
+
+  
+});
 
 module.exports = router;
