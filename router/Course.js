@@ -4,6 +4,7 @@ const con = require("../utilities/db");
 const moment = require("moment");
 require("dotenv").config();
 
+// 課程主頁 抓取所有課程資訊
 router.get("/", async (req, res) => {
   let result = await con.queryAsync(
     "SELECT *FROM course ORDER BY upload_time DESC"
@@ -18,9 +19,10 @@ router.get("/", async (req, res) => {
   res.json(result);
 });
 
+// 抓取熱門課程
 router.get("/hitsort", async (req, res) => {
   let result = await con.queryAsync(
-    "SELECT *FROM course ORDER BY likes DESC"
+    "SELECT * FROM course ORDER BY likes DESC  LIMIT 3"
   );
   if (result) {
     for (let i = 0; i < result.length; i++) {
@@ -32,7 +34,17 @@ router.get("/hitsort", async (req, res) => {
   res.json(result);
 });
 
+// 抓使用者資訊
+router.get("/isUser", async (req, res) => {
+  let theUser = req.session.userId
+  let result = await con.queryAsync("SELECT * FROM user WHERE id = ?", [
+    theUser,
+  ]);
+  res.json(result);
+});
 
+
+// 將單獨課程資訊傳回前端
 router.get("/SingleCourse/:id", async (req, res) => {
   let result = await con.queryAsync("SELECT * FROM course WHERE id = ?", [
     req.params.id,
@@ -49,7 +61,7 @@ router.get("/comment", async (req, res) => {
 
 router.post("/addComment", async (req, res) => {
   let text =req.body.text
-  let user_id =req.body.user_id
+  let user_id =req.session.userId
   let course_id =req.body.course_id
   let created_at =req.body.created_at
   console.log(req.body)
