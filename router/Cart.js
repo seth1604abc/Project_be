@@ -13,6 +13,11 @@ router.post("/addcart/:productId/", async (req, res) => {
   );
   res.json(result);
 });
+//測試
+router.post("http://emap.pcsc.com.tw/EMapSDK.aspx", async (req, res) => {
+  
+  res.json(result);
+});
 //拿購物車親但
 router.get("/list", async (req, res) => {
   let id = req.session.userId;
@@ -62,5 +67,6 @@ router.delete("/delete-selected", async (req, res) => {
   );
   res.json(result);
 });
+
 
 module.exports = router;
