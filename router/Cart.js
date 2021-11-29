@@ -13,11 +13,7 @@ router.post("/addcart/:productId/", async (req, res) => {
   );
   res.json(result);
 });
-//測試
-router.post("http://emap.pcsc.com.tw/EMapSDK.aspx", async (req, res) => {
-  
-  res.json(result);
-});
+
 //拿購物車親但
 router.get("/list", async (req, res) => {
   let id = req.session.userId;
@@ -64,6 +60,19 @@ router.delete("/delete-selected", async (req, res) => {
 
   let result = await con.queryAsync(
     `DELETE FROM cart WHERE product_id IN (${data}) AND user_id=1`
+  );
+  res.json(result);
+});
+
+//新增消費紀錄
+router.post("/add-order",async(req,res)=>{
+  let id = req.session.userId;
+  let data = req.body;
+  console.log(typeof data); 
+  console.log(data);
+
+  let result=await con.queryAsync(
+    "INSERT INTO order_list(user_id,total_price,pay_method,use_point,address,ship_method,gain_point) VALUES(?)",[[data.user_id,data.total,data.payment,data.point,data.address,data.shipment,data.gainPoint]]
   );
   res.json(result);
 });
