@@ -46,12 +46,13 @@ router.get("/isUser", async (req, res) => {
 
 // 將單獨課程資訊傳回前端
 router.get("/SingleCourse/:id", async (req, res) => {
-  let result = await con.queryAsync("SELECT * FROM course WHERE id = ?", [
+  let result = await con.queryAsync("SELECT course.*, user.first_name,user.last_name, user.image FROM course JOIN user ON course.user_id = user.id WHERE course.id = ?", [
     req.params.id,
   ]);
   res.json(result);
 });
 
+// 抓留言
 router.get("/comment", async (req, res) => {
   let mainComment = await con.queryAsync("SELECT course_comment.*, user.first_name AS user_id ,user.image FROM course_comment JOIN user ON course_comment.user_id=user.id ORDER BY id DESC");
   let sonComment = await con.queryAsync("SELECT response_comment.*, user.first_name AS user_id ,user.image FROM response_comment JOIN user ON response_comment.user_id=user.id");
