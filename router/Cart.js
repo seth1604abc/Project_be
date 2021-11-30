@@ -60,8 +60,8 @@ router.delete("/delete/:productId", async (req, res) => {
 router.delete("/delete-selected", async (req, res) => {
   let id = req.session.userId;
   let data = req.body.items;
-  console.log(typeof data);
-  console.log(data);
+  // console.log(typeof data);
+  // console.log(data);
 
   let result = await con.queryAsync(
     `DELETE FROM cart WHERE product_id IN (${data}) AND user_id=1`
@@ -70,12 +70,21 @@ router.delete("/delete-selected", async (req, res) => {
 });
 
 //更新點數
-router.patch("/gain-point", async (req, res) => {
+router.patch("/gain-point/:point", async (req, res) => {
   let id = req.session.userId;
-  let data = req.body.gainPoint;
   let result = await con.queryAsync(
-    "UPDATE user SET point=point+? WHERE  user_id=1",
-    [data]
+    "UPDATE user SET point=point-? WHERE id=1",
+    [req.params.point]
+  );
+  res.json(result);
+});
+//新增售出。減少庫存
+router.patch("/product-amount/:amount/:productId", async (req, res) => {
+  let id = req.session.userId;
+  console.log(req.params.amount)
+  let result = await con.queryAsync(
+    "UPDATE product SET sold=sold+?, remain=remain-? WHERE id=?",
+    [req.params.amount,req.params.amount,req.params.productId]
   );
   res.json(result);
 });
@@ -84,8 +93,8 @@ router.patch("/gain-point", async (req, res) => {
 router.post("/add-order", async (req, res) => {
   let id = req.session.userId;
   let data = req.body;
-  console.log(typeof data);
-  console.log(data);
+  // console.log(typeof data);
+  // console.log(data);
   let result = await con.queryAsync(
     "INSERT INTO order_list(user_id,total_price,pay_method,use_point,address,ship_method,gain_point) VALUES(?)",
     [
