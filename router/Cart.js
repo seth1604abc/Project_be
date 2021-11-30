@@ -69,13 +69,23 @@ router.delete("/delete-selected", async (req, res) => {
   res.json(result);
 });
 
+//更新點數
+router.patch("/gain-point", async (req, res) => {
+  let id = req.session.userId;
+  let data = req.body.gainPoint;
+  let result = await con.queryAsync(
+    "UPDATE user SET point=point+? WHERE  user_id=1",
+    [data]
+  );
+  res.json(result);
+});
+
 //新增消費紀錄
 router.post("/add-order", async (req, res) => {
   let id = req.session.userId;
   let data = req.body;
   console.log(typeof data);
   console.log(data);
-
   let result = await con.queryAsync(
     "INSERT INTO order_list(user_id,total_price,pay_method,use_point,address,ship_method,gain_point) VALUES(?)",
     [
@@ -93,25 +103,22 @@ router.post("/add-order", async (req, res) => {
   res.json(result);
 });
 //新增消費紀錄細項
-router.post("/add-orderdetail", async (req, res) => {
-  let id = req.session.userId;
-  let pid = req.body.listId;
-  let pAmount = req.body.listAmount;
-  let order = await con.queryAsync(
-    "SELECT AUTO_INCREMENT 
-FROM information_schema.tables
-WHERE table_name = order
-     AND table_schema = projectpb_be"
-  );
-  console.log(typeof data);
-  console.log(data);
+// router.post("/add-orderdetail", async (req, res) => {
+//   let id = req.session.userId;
+//   let pid = req.body.listId;
+//   let pAmount = req.body.listAmount;
+//   let order = await con.queryAsync(
+//     "select auto_increment from information_schema.TABLES where TABLE_NAME =order_list and TABLE_SCHEMA=projectpb_be"
+//   );
+//   console.log(typeof data);
+//   console.log(data);
 
-  let result = await con.queryAsync(
-    "INSERT INTO order_detail(product_id,order_id,price,amount) VALUES(?)",
-    [[pid, order, pAmount]]
-  );
-  res.json(result);
-});
+//   let result = await con.queryAsync(
+//     "INSERT INTO order_detail(product_id,order_id,price,amount) VALUES(?)",
+//     [[pid, order, pAmount]]
+//   );
+//   res.json(result);
+// });
 
 //便利商店
 router.post("/mart", async (req, res) => {
@@ -134,7 +141,7 @@ router.post("/mart", async (req, res) => {
 
   axios(config)
     .then(function (response) {
-      console.log(JSON.stringify(response.data));
+      // console.log(JSON.stringify(response.data));
       res.json(JSON.stringify(response.data));
     })
     .catch(function (error) {
