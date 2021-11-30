@@ -4,7 +4,6 @@ const router = express.Router();
 var axios = require("axios");
 var qs = require("qs");
 
-
 //加入購物車
 router.post("/addcart/:productId/", async (req, res) => {
   let id = req.session.userId;
@@ -12,7 +11,7 @@ router.post("/addcart/:productId/", async (req, res) => {
   // console.log(data);
   let result = await con.queryAsync(
     "INSERT INTO cart(user_id,product_id,amount) VALUES(?)",
-    [[1, req.params.productId, data.number]]
+    [[id, req.params.productId, data.number]]
   );
   res.json(result);
 });
@@ -21,7 +20,7 @@ router.post("/addcart/:productId/", async (req, res) => {
 router.get("/list", async (req, res) => {
   let id = req.session.userId;
   let result = await con.queryAsync(
-    "SELECT * FROM cart INNER JOIN product ON cart.product_id=product.id INNER JOIN product_images ON product.id=product_images.product_id WHERE is_main=1 AND user_id=1"
+    `SELECT * FROM cart INNER JOIN product ON cart.product_id=product.id INNER JOIN product_images ON product.id=product_images.product_id WHERE is_main=1 AND user_id=${id}`
   );
   res.json(result);
 });
@@ -30,7 +29,7 @@ router.get("/list", async (req, res) => {
 router.patch("/list/:productId/:amount", async (req, res) => {
   let id = req.session.userId;
   let result = await con.queryAsync(
-    "UPDATE cart SET amount=? WHERE product_id=? AND user_id=1",
+    `UPDATE cart SET amount=? WHERE product_id=? AND user_id=${id}`,
     [req.params.amount, req.params.productId]
   );
   res.json(result);
@@ -40,7 +39,7 @@ router.patch("/list/:productId/:amount", async (req, res) => {
 router.patch("/update/:productId/:amount", async (req, res) => {
   let id = req.session.userId;
   let result = await con.queryAsync(
-    "UPDATE cart SET amount=amount+? WHERE product_id=? AND user_id=1",
+    `UPDATE cart SET amount=amount+? WHERE product_id=? AND user_id=${id}`,
     [req.params.amount, req.params.productId]
   );
   res.json(result);
@@ -50,7 +49,7 @@ router.patch("/update/:productId/:amount", async (req, res) => {
 router.delete("/delete/:productId", async (req, res) => {
   let id = req.session.userId;
   let result = await con.queryAsync(
-    "DELETE FROM cart WHERE product_id=? AND user_id=1",
+    `DELETE FROM cart WHERE product_id=? AND user_id=${id}`,
     [req.params.productId]
   );
   res.json(result);
@@ -64,7 +63,7 @@ router.delete("/delete-selected", async (req, res) => {
   // console.log(data);
 
   let result = await con.queryAsync(
-    `DELETE FROM cart WHERE product_id IN (${data}) AND user_id=1`
+    `DELETE FROM cart WHERE product_id IN (${data}) AND user_id=${id}`
   );
   res.json(result);
 });
@@ -73,14 +72,13 @@ router.delete("/delete-selected", async (req, res) => {
 router.patch("/gain-point/:point", async (req, res) => {
   let id = req.session.userId;
   let result = await con.queryAsync(
-    "UPDATE user SET point=point-? WHERE id=1",
+    `UPDATE user SET point=point-? WHERE id=${id}`,
     [req.params.point]
   );
   res.json(result);
 });
 //新增售出。減少庫存
 router.patch("/product-amount/:amount/:productId", async (req, res) => {
-  let id = req.session.userId;
   // console.log(req.params.amount);
   let result = await con.queryAsync(
     "UPDATE product SET sold=sold+?, remain=remain-? WHERE id=?",
@@ -99,7 +97,7 @@ router.post("/add-order", async (req, res) => {
     "INSERT INTO order_list(user_id,total_price,pay_method,use_point,address,ship_method,gain_point) VALUES(?)",
     [
       [
-        data.user_id,
+        id,
         data.total,
         data.payment,
         data.point,
@@ -114,7 +112,6 @@ router.post("/add-order", async (req, res) => {
 
 //拿 orderid
 router.get("/getorderid", async (req, res) => {
-  let id = req.session.userId;
   let result = await con.queryAsync(
     "select AUTO_INCREMENT from information_schema.TABLES where TABLE_NAME ='order_list'and TABLE_SCHEMA='projectpb_be'"
   );
