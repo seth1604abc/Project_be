@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
 })
 const imageUpload = multer({ storage: storage });
 //檢查是否登入
-// router.use(loginCheckMiddleware);
+router.use(loginCheckMiddleware);
 
 router.get("/info", async (req, res) => {
     let id = "1";

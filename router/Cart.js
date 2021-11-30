@@ -3,7 +3,7 @@ const con = require("../utilities/db");
 const router = express.Router();
 var axios = require("axios");
 var qs = require("qs");
-const cheerio = require("cheerio");
+
 
 //加入購物車
 router.post("/addcart/:productId/", async (req, res) => {
@@ -81,10 +81,10 @@ router.patch("/gain-point/:point", async (req, res) => {
 //新增售出。減少庫存
 router.patch("/product-amount/:amount/:productId", async (req, res) => {
   let id = req.session.userId;
-  console.log(req.params.amount)
+  // console.log(req.params.amount);
   let result = await con.queryAsync(
     "UPDATE product SET sold=sold+?, remain=remain-? WHERE id=?",
-    [req.params.amount,req.params.amount,req.params.productId]
+    [req.params.amount, req.params.amount, req.params.productId]
   );
   res.json(result);
 });
@@ -111,23 +111,30 @@ router.post("/add-order", async (req, res) => {
   );
   res.json(result);
 });
-//新增消費紀錄細項
-// router.post("/add-orderdetail", async (req, res) => {
-//   let id = req.session.userId;
-//   let pid = req.body.listId;
-//   let pAmount = req.body.listAmount;
-//   let order = await con.queryAsync(
-//     "select auto_increment from information_schema.TABLES where TABLE_NAME =order_list and TABLE_SCHEMA=projectpb_be"
-//   );
-//   console.log(typeof data);
-//   console.log(data);
 
-//   let result = await con.queryAsync(
-//     "INSERT INTO order_detail(product_id,order_id,price,amount) VALUES(?)",
-//     [[pid, order, pAmount]]
-//   );
-//   res.json(result);
-// });
+//拿 orderid
+router.get("/getorderid", async (req, res) => {
+  let id = req.session.userId;
+  let result = await con.queryAsync(
+    "select AUTO_INCREMENT from information_schema.TABLES where TABLE_NAME ='order_list'and TABLE_SCHEMA='projectpb_be'"
+  );
+  console.log(result[0].AUTO_INCREMENT);
+  res.json(result[0].AUTO_INCREMENT);
+});
+// 新增消費紀錄細項
+router.post("/add-orderdetail", async (req, res) => {
+  let id = req.session.userId;
+  let pid = req.body.id;
+  let pAmount = req.body.amount;
+  let price = req.body.price;
+  let order = req.body.order;
+
+  let result = await con.queryAsync(
+    "INSERT INTO order_detail(product_id,order_id,price,amount) VALUES(?)",
+    [[pid, order, price, pAmount]]
+  );
+  res.json(result);
+});
 
 //便利商店
 router.post("/mart", async (req, res) => {
