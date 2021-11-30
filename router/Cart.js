@@ -16,11 +16,12 @@ router.post("/addcart/:productId/", async (req, res) => {
   res.json(result);
 });
 
-//拿購物車親但
+//拿購物車清單
 router.get("/list", async (req, res) => {
   let id = req.session.userId;
   let result = await con.queryAsync(
-    `SELECT * FROM cart INNER JOIN product ON cart.product_id=product.id INNER JOIN product_images ON product.id=product_images.product_id WHERE is_main=1 AND user_id=?`,[id]
+    `SELECT * FROM cart INNER JOIN product ON cart.product_id=product.id INNER JOIN product_images ON product.id=product_images.product_id WHERE is_main=1 AND user_id=?`,
+    [id]
   );
   res.json(result);
 });
@@ -31,7 +32,7 @@ router.patch("/list/:productId/:amount", async (req, res) => {
   console.log(id);
   let result = await con.queryAsync(
     `UPDATE cart SET amount=? WHERE product_id=? AND user_id=?`,
-    [req.params.amount, req.params.productId,id]
+    [req.params.amount, req.params.productId, id]
   );
   res.json(result);
 });
@@ -39,9 +40,10 @@ router.patch("/list/:productId/:amount", async (req, res) => {
 //更新購物車清單(當商品已經在購物車)
 router.patch("/update/:productId/:amount", async (req, res) => {
   let id = req.session.userId;
+  console.log(id);
   let result = await con.queryAsync(
-    `UPDATE cart SET amount=amount+? WHERE product_id=? AND user_id=?`,
-    [req.params.amount, req.params.productId,id]
+    "UPDATE cart SET amount=amount+? WHERE product_id=? AND user_id=?",
+    [req.params.amount, req.params.productId, id]
   );
   res.json(result);
 });
@@ -51,7 +53,7 @@ router.delete("/delete/:productId", async (req, res) => {
   let id = req.session.userId;
   let result = await con.queryAsync(
     `DELETE FROM cart WHERE product_id=? AND user_id=?`,
-    [req.params.productId,id]
+    [req.params.productId, id]
   );
   res.json(result);
 });
@@ -74,7 +76,7 @@ router.patch("/gain-point/:point", async (req, res) => {
   let id = req.session.userId;
   let result = await con.queryAsync(
     `UPDATE user SET point=point-? WHERE id=?}`,
-    [req.params.point,id]
+    [req.params.point, id]
   );
   res.json(result);
 });
