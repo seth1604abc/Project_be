@@ -20,7 +20,7 @@ router.post("/addcart/:productId/", async (req, res) => {
 router.get("/list", async (req, res) => {
   let id = req.session.userId;
   let result = await con.queryAsync(
-    `SELECT * FROM cart INNER JOIN product ON cart.product_id=product.id INNER JOIN product_images ON product.id=product_images.product_id WHERE is_main=1 AND user_id=${id}`
+    `SELECT * FROM cart INNER JOIN product ON cart.product_id=product.id INNER JOIN product_images ON product.id=product_images.product_id WHERE is_main=1 AND user_id=?`,[id]
   );
   res.json(result);
 });
@@ -28,9 +28,10 @@ router.get("/list", async (req, res) => {
 //更新購物車清單
 router.patch("/list/:productId/:amount", async (req, res) => {
   let id = req.session.userId;
+  console.log(id);
   let result = await con.queryAsync(
-    `UPDATE cart SET amount=? WHERE product_id=? AND user_id=${id}`,
-    [req.params.amount, req.params.productId]
+    `UPDATE cart SET amount=? WHERE product_id=? AND user_id=?`,
+    [req.params.amount, req.params.productId,id]
   );
   res.json(result);
 });
@@ -39,8 +40,8 @@ router.patch("/list/:productId/:amount", async (req, res) => {
 router.patch("/update/:productId/:amount", async (req, res) => {
   let id = req.session.userId;
   let result = await con.queryAsync(
-    `UPDATE cart SET amount=amount+? WHERE product_id=? AND user_id=${id}`,
-    [req.params.amount, req.params.productId]
+    `UPDATE cart SET amount=amount+? WHERE product_id=? AND user_id=?`,
+    [req.params.amount, req.params.productId,id]
   );
   res.json(result);
 });
@@ -49,8 +50,8 @@ router.patch("/update/:productId/:amount", async (req, res) => {
 router.delete("/delete/:productId", async (req, res) => {
   let id = req.session.userId;
   let result = await con.queryAsync(
-    `DELETE FROM cart WHERE product_id=? AND user_id=${id}`,
-    [req.params.productId]
+    `DELETE FROM cart WHERE product_id=? AND user_id=?`,
+    [req.params.productId,id]
   );
   res.json(result);
 });
@@ -72,8 +73,8 @@ router.delete("/delete-selected", async (req, res) => {
 router.patch("/gain-point/:point", async (req, res) => {
   let id = req.session.userId;
   let result = await con.queryAsync(
-    `UPDATE user SET point=point-? WHERE id=${id}`,
-    [req.params.point]
+    `UPDATE user SET point=point-? WHERE id=?}`,
+    [req.params.point,id]
   );
   res.json(result);
 });
