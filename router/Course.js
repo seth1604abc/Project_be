@@ -7,7 +7,7 @@ require("dotenv").config();
 // 課程主頁 抓取所有課程資訊
 router.get("/", async (req, res) => {
   let result = await con.queryAsync(
-    "SELECT *FROM course ORDER BY upload_time DESC"
+    "SELECT course.* ,user.image FROM course JOIN user ON course.user_id = user.id ORDER BY upload_time DESC"
   );
   if (result) {
     for (let i = 0; i < result.length; i++) {
