@@ -22,7 +22,7 @@ const imageUpload = multer({ storage: storage });
 router.use(loginCheckMiddleware);
 
 router.get("/info", async (req, res) => {
-    let id = "1";
+    let id = req.session.userId;
     // let id = req.session.userId;
     let result = await con.queryAsync("SELECT * FROM user WHERE id=?", [id]);
     if (result) {
