@@ -3,6 +3,8 @@ const con = require("../utilities/db");
 const router = express.Router();
 var axios = require("axios");
 var qs = require("qs");
+const request = require('request');
+const cheerio = require('cheerio');
 
 //加入購物車
 router.post("/addcart/:productId/", async (req, res) => {
@@ -138,9 +140,7 @@ router.post("/add-orderdetail", async (req, res) => {
 
 //便利商店
 router.post("/mart", async (req, res) => {
-  let id = req.session.userId;
   let body = req.body;
-
   let data = qs.stringify({
     commandid: "SearchStore",
     city: `${body.city}`,
@@ -151,6 +151,7 @@ router.post("/mart", async (req, res) => {
     url: "http://emap.pcsc.com.tw/EMapSDK.aspx",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
+      
     },
     data: data,
   };
