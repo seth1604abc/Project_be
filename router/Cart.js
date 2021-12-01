@@ -75,7 +75,7 @@ router.delete("/delete-selected", async (req, res) => {
 router.patch("/gain-point/:point", async (req, res) => {
   let id = req.session.userId;
   let result = await con.queryAsync(
-    `UPDATE user SET point=point-? WHERE id=?}`,
+    `UPDATE user SET point=point-? WHERE id=?`,
     [req.params.point, id]
   );
   res.json(result);
