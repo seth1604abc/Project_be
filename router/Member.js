@@ -23,6 +23,7 @@ router.use(loginCheckMiddleware);
 
 router.get("/info", async (req, res) => {
     let id = req.session.userId;
+    // let id = req.session.userId;
     let result = await con.queryAsync("SELECT * FROM user WHERE id=?", [id]);
     if (result) {
         result[0].birth = await moment(result[0].birth).format('YYYY-MM-DD');
