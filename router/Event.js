@@ -41,4 +41,12 @@ router.post('/coach-event-add', async (req, res)=>{
 //     res.json(eventId);
 //   });
 
+
+//取得前三熱門課程(啟學新增)
+router.get("/topEvent", async (req, res) => {
+    let topEvent = await con.queryAsync("SELECT * FROM event ORDER BY deadline DESC LIMIT 3");
+    res.json(topEvent);
+  });
+  
+
 module.exports = router;
