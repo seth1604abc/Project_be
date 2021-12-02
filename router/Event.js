@@ -153,4 +153,12 @@ router.post("/event-delete", async (req, res) => {
     res.send("刪除成功");
 })
 
+
+//取得前三熱門課程(啟學新增)
+router.get("/topEvent", async (req, res) => {
+    let topEvent = await con.queryAsync("SELECT * FROM event ORDER BY deadline DESC LIMIT 3");
+    res.json(topEvent);
+  });
+  
+
 module.exports = router;

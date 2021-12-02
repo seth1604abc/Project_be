@@ -22,6 +22,7 @@ app.use(
     },
   })
 );
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -45,7 +46,8 @@ app.use("/cart", cartRouter);
 const courseRouter = require('./router/Course')
 app.use("/course", courseRouter)
 //課程相關路由(芳嫚新增)
-const eventRouter = require('./router/Event')
+const eventRouter = require('./router/Event');
+const { next } = require("cheerio/lib/api/traversing");
 app.use("/event", eventRouter)
 
 const coachRouter = require("./router/Coach")
