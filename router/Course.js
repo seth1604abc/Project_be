@@ -72,4 +72,11 @@ router.get("/hitCourse", async (req, res) => {
   res.json(hitCourse);
 });
 
+
+//選擇特定部位最高like(啟學新增)
+router.get("/part-best/:partid", async (req, res) => {
+  let partBest = await con.queryAsync("SELECT * FROM course  WHERE body_part_id=? ORDER BY likes DESC LIMIT 1 ",[req.params.partid]);
+  res.json(partBest);
+});
+
 module.exports = router;
