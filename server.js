@@ -50,6 +50,9 @@ const eventRouter = require('./router/Event');
 const { next } = require("cheerio/lib/api/traversing");
 app.use("/event", eventRouter)
 
+const coachRouter = require("./router/Coach")
+app.use("/coach", coachRouter);
+
 app.listen(3001, () => {
   console.log("Server is listening at Port 3001");
 });
