@@ -41,6 +41,8 @@ router.get('/login', async (req, res) => {
                 res.json({userId: req.session.userId, role: "教練中心", url: "/coach-info"});
         }
         
+    }else{
+        res.json({userId: "", role: "", url: ""})
     }
     
 })
