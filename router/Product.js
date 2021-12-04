@@ -89,6 +89,12 @@ router.get("/single/:id",async(req,res)=>{
   let id= req.params.id
   console.log(id);
 })
+//商品留言數量
+router.get("/comments-number/:productId",async(req,res)=>{
+  let id = req.session.userId;
+  let result=await con.queryAsync("SELECT COUNT (*) AS count FROM product_comment WHERE product_id=? ",[req.params.productId])
+  res.json(result);
+})
 
 //商品單獨頁留言
 router.get("/comments/:productId",async(req,res)=>{
