@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
 });
 
 // 抓取熱門課程
-router.get("/hitsort", async (req, res) => {
+router.get("/hitsort", async (req, res) => { 
   let result = await con.queryAsync(
     "SELECT * FROM course ORDER BY likes DESC  LIMIT 3"
   );
