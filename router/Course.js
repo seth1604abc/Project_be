@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
 });
 
 // 抓取熱門課程
-router.get("/hitsort", async (req, res) => {
+router.get("/hitsort", async (req, res) => { 
   let result = await con.queryAsync(
     "SELECT * FROM course ORDER BY likes DESC  LIMIT 3"
   );
@@ -60,6 +60,7 @@ router.get("/comment", async (req, res) => {
   res.json(allComment);
 });
 
+// 新增主留言
 router.post("/addComment", async (req, res) => {
   let text =req.body.text
   let user_id =req.session.userId
@@ -70,6 +71,7 @@ router.post("/addComment", async (req, res) => {
   res.json('主留言有了');
 });
 
+// 新增子留言
 router.post("/addChildrenComment", async (req, res) => {
   let text =req.body.text
   let user_id =req.session.userId
@@ -80,11 +82,13 @@ router.post("/addChildrenComment", async (req, res) => {
   res.json('副留言有了');
 });
 
+// 抓熱門課程
 router.get("/hitCourse", async (req, res) => {
   let hitCourse = await con.queryAsync("SELECT * FROM course ORDER BY likes DESC");
   res.json(hitCourse);
 });
 
+// 點讚
 router.post("/changeLikesCount", async (req, res) => {
   let likes =req.body.like
   let id = req.body.id
@@ -92,6 +96,7 @@ router.post("/changeLikesCount", async (req, res) => {
   res.json('更改數字了');
 });
 
+// 新增收藏清單
 router.post("/addLikeList", async (req, res) => {
   let course =req.body.course
   let id = req.session.userId
@@ -99,6 +104,7 @@ router.post("/addLikeList", async (req, res) => {
   res.json('更改數字了');
 });
 
+// 刪除收藏清單
 router.post("/deleteLikeList", async (req, res) => {
   let course =req.body.course
   let id = req.session.userId
@@ -106,17 +112,27 @@ router.post("/deleteLikeList", async (req, res) => {
   res.json('更改數字了');
 });
 
+// 抓收藏清單
 router.get('/isLikeList',async (req,res)=>{
   let LikeList = await con.queryAsync('SELECT * FROM course_list')
   res.json(LikeList)
 })
 
+// 抓user_id
 router.get('/isLikeListMemberId',async (req,res)=>{
   let theUser = req.session.userId
   res.json(theUser)
 })
 
-//選擇特定部位最高like(啟學新增)
+// 新增觀看次數
+router.post('/addViews',async (req,res)=>{
+  let course_id = req.body.course_id
+  let views = req.body.views
+  let addViews = await con.queryAsync("UPDATE course SET views=? WHERE id=?",[views,course_id]);
+  res.json(course_id,views,'修改好了')
+})
+
+// 選擇特定部位最高like(啟學新增)
 router.get("/part-best/:partid", async (req, res) => {
   let partBest = await con.queryAsync("SELECT * FROM course  WHERE body_part_id=? ORDER BY likes DESC LIMIT 1 ",[req.params.partid]);
   res.json(partBest);
