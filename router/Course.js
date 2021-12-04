@@ -54,7 +54,7 @@ router.get("/SingleCourse/:id", async (req, res) => {
 
 // 抓留言
 router.get("/comment", async (req, res) => {
-  let mainComment = await con.queryAsync("SELECT course_comment.*, user.first_name AS user_id ,user.image FROM course_comment JOIN user ON course_comment.user_id=user.id ORDER BY id DESC");
+  let mainComment = await con.queryAsync("SELECT course_comment.*, user.last_name AS user_id ,user.image FROM course_comment JOIN user ON course_comment.user_id=user.id ORDER BY id DESC");
   let sonComment = await con.queryAsync("SELECT response_comment.*, user.first_name AS user_id ,user.image FROM response_comment JOIN user ON response_comment.user_id=user.id");
   let allComment = [...mainComment,sonComment]
   res.json(allComment);
