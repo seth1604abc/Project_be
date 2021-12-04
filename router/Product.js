@@ -4,7 +4,6 @@ const router = express.Router();
 
 //取得所有商品
 router.get("/", async (req, res) => {
-  let id = req.session.userId;
   let result = await con.queryAsync("SELECT * FROM product INNER JOIN product_images ON product.id = product_images.product_id WHERE is_main=1");
   res.json(result);
 });
@@ -89,6 +88,12 @@ router.get("/equipment", async (req, res) => {
 router.get("/single/:id",async(req,res)=>{
   let id= req.params.id
   console.log(id);
+})
+//商品留言數量
+router.get("/comments-number/:productId",async(req,res)=>{
+  let id = req.session.userId;
+  let result=await con.queryAsync("SELECT COUNT (*) AS count FROM product_comment WHERE product_id=? ",[req.params.productId])
+  res.json(result);
 })
 
 //商品單獨頁留言

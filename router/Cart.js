@@ -66,9 +66,9 @@ router.delete("/delete-selected", async (req, res) => {
   let data = req.body.items;
   // console.log(typeof data);
   // console.log(data);
-
+console.log(data);
   let result = await con.queryAsync(
-    `DELETE FROM cart WHERE product_id IN (${data}) AND user_id=${id}`
+    `DELETE FROM cart WHERE product_id IN (${data}) AND user_id=?`,[data,id]
   );
   res.json(result);
 });
@@ -76,9 +76,10 @@ router.delete("/delete-selected", async (req, res) => {
 //更新點數
 router.patch("/gain-point/:point", async (req, res) => {
   let id = req.session.userId;
+  console.log(req.params.point);
   let result = await con.queryAsync(
-    `UPDATE user SET point=point-? WHERE id=?`,
-    [req.params.point, id]
+    "UPDATE user SET point=point-? WHERE id=?",
+    [req.params.point ,id]
   );
   res.json(result);
 });
@@ -120,7 +121,7 @@ router.get("/getorderid", async (req, res) => {
   let result = await con.queryAsync(
     "select AUTO_INCREMENT from information_schema.TABLES where TABLE_NAME ='order_list'and TABLE_SCHEMA='projectpb_be'"
   );
-  console.log(result[0].AUTO_INCREMENT);
+  // console.log(result[0].AUTO_INCREMENT);
   res.json(result[0].AUTO_INCREMENT);
 });
 // 新增消費紀錄細項
