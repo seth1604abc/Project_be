@@ -39,7 +39,7 @@ router.post("/info", async (req, res) => {
     let id = req.session.userId;
     let data = req.body;
     console.log(data);
-    let result = await con.queryAsync("UPDATE user SET first_name=?, last_name=?, birth=?, phone=?, email=?, address=?, city=?, area=?", [data.first_name, data.last_name, data.birth, data.phone, data.email, data.address, data.city, data.area]);
+    let result = await con.queryAsync("UPDATE user SET first_name=?, last_name=?, birth=?, phone=?, email=?, address=?, city=?, area=? WHERE id=?", [data.first_name, data.last_name, data.birth, data.phone, data.email, data.address, data.city, data.area, id]);
 })
 
 router.get("/memberphoto", async (req, res) => {
