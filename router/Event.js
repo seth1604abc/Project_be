@@ -29,7 +29,7 @@ router.get('/coach-event', async(req, res) => {
         result[i].quota = result[i].limitcount - length;
         let coach = await con.queryAsync("SELECT last_name, image FROM user WHERE id=?", [result[i].user_id]);
         result[i].coach = coach[0].last_name;
-        result[i].image = coach[0].image;
+        result[i].coachImage = coach[0].image;
         result[i].datetime = await moment(result[i].datetime).format("YYYY-MM-DD hh:mm:ss");
         result[i].event_time_month = await moment(result[i].datetime).month() + 1;
         result[i].event_time_weekday = await moment(result[i].datetime).isoWeekday();
@@ -41,14 +41,14 @@ router.get('/coach-event', async(req, res) => {
 router.post("/search-event", async (req, res) => {
     let start = moment(req.body.start, "MM-DD-YYYY").format("YYYY-MM-DD hh:mm:ss");
     let end = moment(req.body.end, "MM-DD-YYYY").format("YYYY-MM-DD hh:mm:ss");    
-    let result = await con.queryAsync("SELECT * FROM event WHERE datetime BETWEEN ? AND ?", [start, end]);
+    let result = await con.queryAsync("SELECT * FROM event WHERE datetime BETWEEN ? AND ? ORDER BY datetime DESC", [start, end]);
     for(let i=0; i<result.length; i++){
         let alllength = await con.queryAsync("SELECT * FROM event_list WHERE event_id=?", [result[i].id])
         let length = alllength.length;
         result[i].quota = result[i].limit - length;
         let coach = await con.queryAsync("SELECT last_name, image FROM user WHERE id=?", [result[i].user_id]);
         result[i].coach = coach[0].last_name;
-        result[i].image = coach[0].image;
+        result[i].coachImage = coach[0].image;
         result[i].datetime = await moment(result[i].datetime).format("YYYY-MM-DD hh:mm:ss");
         result[i].event_time_month = await moment(result[i].datetime).month() + 1;
         result[i].event_time_weekday = await moment(result[i].datetime).isoWeekday();
@@ -91,7 +91,7 @@ router.post("/other", async (req, res) => {
         result[i].datetime = moment(result[i].datetime).format("YYYY-MM-DD hh:mm:ss");
         let alllength = await con.queryAsync("SELECT * FROM event_list WHERE event_id=?", [result[i].id])
         let length = alllength.length;
-        result[i].quota = result[i].limit - length;
+        result[i].quota = result[i].limitcount - length;
         let coach = await con.queryAsync("SELECT last_name, image FROM user WHERE id=?", [result[i].user_id]);
         result[i].coach = coach[0].last_name;
         result[i].coachimage = coach[0].image;
