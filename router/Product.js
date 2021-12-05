@@ -4,7 +4,6 @@ const router = express.Router();
 
 //取得所有商品
 router.get("/", async (req, res) => {
-  let id = req.session.userId;
   let result = await con.queryAsync("SELECT * FROM product INNER JOIN product_images ON product.id = product_images.product_id WHERE is_main=1");
   res.json(result);
 });
@@ -35,10 +34,11 @@ router.get("/hot-product", async (req, res) => {
   );
   res.json(result);
 });
-//取得top 3熱銷商品
-// router.get("/hot-product", async (req, res) => {
+
+//搜尋商品名稱
+// router.get("/search/:input", async (req, res) => {
 //   let result = await con.queryAsync(
-//     "SELECT * FROM product ORDER BY sold DESC LIMIT 3"
+//     "SELECT * FROM product INNER JOIN product_images ON product.id = product_images.product_id WHERE ",[req.params.category,req.params.productId]
 //   );
 //   res.json(result);
 // });
@@ -89,15 +89,28 @@ router.get("/single/:id",async(req,res)=>{
   let id= req.params.id
   console.log(id);
 })
+//商品留言數量
+router.get("/comments-number/:productId",async(req,res)=>{
+  let id = req.session.userId;
+  let result=await con.queryAsync("SELECT COUNT (*) AS count FROM product_comment WHERE product_id=? ",[req.params.productId])
+  res.json(result);
+})
 
 //商品單獨頁留言
 router.get("/comments/:productId",async(req,res)=>{
-  let result=await con.queryAsync("SELECT * FROM product_comment INNER JOIN user ON product_comment.user_id=user.id WHERE product_id=? ORDER BY created_at ASC",[req.params.productId])
+  let id = req.session.userId;
+  let result=await con.queryAsync("SELECT * FROM product_comment INNER JOIN user ON product_comment.user_id=user.id WHERE product_id=? ORDER BY created_at ASC LIMIT 3",[req.params.productId])
+  res.json(result);
+})
+//商品單獨頁更多留言
+router.get("/comment/:productId/:exist",async(req,res)=>{
+  let id = req.session.userId;
+  let result=await con.queryAsync(`SELECT * FROM product_comment INNER JOIN user ON product_comment.user_id=user.id WHERE product_id=? ORDER BY created_at ASC LIMIT ${req.params.exist} ,3`,[req.params.productId])
   res.json(result);
 })
 //商品單獨頁文章
 router.get("/article/:bodypart",async(req,res)=>{
-  let result=await con.queryAsync("SELECT * FROM article INNER JOIN user ON article.user_id=user.id WHERE body_part=? ORDER BY created_at ASC",[req.params.bodypart])
+  let result=await con.queryAsync(`SELECT * FROM article INNER JOIN user ON article.user_id=${id} WHERE body_part=? ORDER BY created_at ASC`,[req.params.bodypart])
   res.json(result);
 })
 

@@ -3,6 +3,13 @@ const router = express.Router();
 const mailer = require('nodemailer');
 const con = require('../utilities/db');
 require('dotenv').config();
+const { loginCheckMiddleware } = require('../Middlewares/Auth');
+
+router.use(loginCheckMiddleware);
+
+router.get("/", async (req, res) => {
+    res.send("havelogin");
+})
 
 router.post("/", async (req, res) => {
     let result = ""
@@ -26,7 +33,7 @@ router.post("/", async (req, res) => {
             from: data.name,
             to: `${data.giftName} <${data.giftEmail}>`,
             subject: 'Hi',
-            html: `<h1>致: ${data.giftName}</h1><pre>${data.giftMessage}</pre><h3>${data.name}</h3>`
+            html: `<h1>致: ${data.giftName}</h1><pre>${data.giftMessage}</pre><p>附上禮物碼: ${result}</p><h3>寄件人: ${data.name}</h3>`
         },
         function(err) {
             if(err) {
