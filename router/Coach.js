@@ -24,10 +24,30 @@ const storage = multer.diskStorage({
 })
 const videoUpload = multer({ storage: storage });
 
-
+router.post("/", async (req, res) => {
+    let id = req.body.id;
+    let result = await con.queryAsync("SELECT first_name, last_name, email, image FROM user WHERE id=?", [id]);
+    let course = await con.queryAsync("SELECT * FROM course WHERE user_id=? ORDER BY likes DESC", [id]);
+    cLength = course.length;
+    course = course.slice(0, 3);
+    let event = await con.queryAsync("SELECT * FROM event WHERE user_id=?", [id]);
+    eLength = event.length;
+    for(let i=0; i<event.length; i++){
+        event[i].datetime = moment(event[i].datetime).format("YYYY-MM-DD hh:mm:ss");
+        let alllength = await con.queryAsync("SELECT * FROM event_list WHERE event_id=?", [event[i].id])
+        let length = alllength.length;
+        event[i].quota = event[i].limitcount - length;
+        let coach = await con.queryAsync("SELECT last_name, image FROM user WHERE id=?", [event[i].user_id]);
+        event[i].coach = coach[0].last_name;
+        event[i].coachimage = coach[0].image;
+    }
+    res.json({result: result, cLength: cLength, eLength: eLength, event: event, course: course});
+})
 
 
 router.use(loginCheckMiddleware);
+
+
 
 router.get("/image", async (req, res) => {
     let id = req.session.userId;
