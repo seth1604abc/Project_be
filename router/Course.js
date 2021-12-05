@@ -132,6 +132,17 @@ router.post('/addViews',async (req,res)=>{
   res.json(course_id,views,'修改好了')
 })
 
+//取得三個相關類別的熱門商品
+router.post("/topThreeProduct", async (req, res) => {
+  let bodyPart = req.body.bodyPartId;
+  let result = await con.queryAsync(
+    "SELECT product.*,product_images.name AS image FROM product INNER JOIN product_images ON product.id = product_images.product_id WHERE body_part_id=? AND is_main=1 ORDER BY sold DESC LIMIT 3",[bodyPart]
+  );
+  console.log(req.body.bodyPartId)
+  res.json(result);
+});
+
+
 // 選擇特定部位最高like(啟學新增)
 router.get("/part-best/:partid", async (req, res) => {
   let partBest = await con.queryAsync("SELECT * FROM course  WHERE body_part_id=? ORDER BY likes DESC LIMIT 1 ",[req.params.partid]);
