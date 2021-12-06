@@ -6,8 +6,8 @@ const multer = require('multer');
 const { getVideoDurationInSeconds } = require('get-video-duration')
 const moment = require('moment');
 
-const videoUploadPath = "D:/EDC/MFEE20/ProjectPB_fe/public/videos";
-const imageUploadPath = "D:/EDC/MFEE20/ProjectPB_fe/public/images";
+const videoUploadPath = "C:/Users/88693/Documents/GitHub/Project_PB/public/videos";
+const imageUploadPath = "C:/Users/88693/Documents/GitHub/Project_PB/public/images";
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         if(file.mimetype == "video/mp4"){
@@ -58,8 +58,8 @@ router.get("/image", async (req, res) => {
 router.get("/info", async (req, res) => {
     let id = req.session.userId;
     let result = await con.queryAsync("SELECT first_name, last_name FROM user WHERE id=?", [id]);
-    let name = result[0].first_name + result[0].last_name
-    res.send(name)
+    let name =result[0].last_name;
+    res.send(name);
 })
 
 router.get("/course", async (req, res) => {    
@@ -96,7 +96,7 @@ router.get("/select-info", async (req, res) => {
 router.post("/new-course", videoUpload.fields([{name: "video"}, {name: "image"}]), async (req, res) => {
     let id = req.session.userId;
     let now = await moment().format("YYYY-MM-DD hh:mm:ss")    
-    let duration = await getVideoDurationInSeconds(`D:/EDC/MFEE20/ProjectPB_fe/public/videos/${req.files.video[0].originalname}`)
+    let duration = await getVideoDurationInSeconds(`C:/Users/88693/Documents/GitHub/Project_PB/public/videos/${req.files.video[0].originalname}`)
     duration = Math.floor(duration);
     duration = await moment(duration, "ss").format("mm:ss");
     let filename = req.files.video[0].originalname;    

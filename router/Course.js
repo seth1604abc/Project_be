@@ -62,24 +62,26 @@ router.get("/comment", async (req, res) => {
 
 // 新增主留言
 router.post("/addComment", async (req, res) => {
-  let text =req.body.text
+  let text =req.body.content
   let user_id =req.session.userId
   let course_id =req.body.course_id
   let created_at =req.body.created_at
   console.log(req.body)
   let addComment = await con.queryAsync("INSERT INTO course_comment (user_id,content,course_id,created_at) VALUES (?,?,?,?)",[user_id,text,course_id,created_at]);
-  res.json('主留言有了');
+  let theNewMainComment = await con.queryAsync("SELECT course_comment.*, user.last_name AS user_id ,user.image FROM course_comment JOIN user ON course_comment.user_id=user.id ORDER BY created_at DESC LIMIT 1");
+  res.json({theNewMainComment:theNewMainComment});
 });
 
 // 新增子留言
 router.post("/addChildrenComment", async (req, res) => {
-  let text =req.body.text
+  let text =req.body.content
   let user_id =req.session.userId
   let course_comment_id =req.body.course_comment_id
   let created_at =req.body.created_at
   console.log(req.body)
   let addComment = await con.queryAsync("INSERT INTO response_comment (user_id,content,course_comment_id,created_at) VALUES (?,?,?,?)",[user_id,text,course_comment_id,created_at]);
-  res.json('副留言有了');
+  let theNewSonComment = await con.queryAsync("SELECT response_comment.*, user.last_name AS user_id ,user.image FROM response_comment JOIN user ON response_comment.user_id=user.id ORDER BY id DESC LIMIT 1");
+  res.json({theNewSonComment:theNewSonComment});
 });
 
 // 抓熱門課程
