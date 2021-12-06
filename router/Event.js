@@ -7,7 +7,7 @@ const NodeGeocoder = require('node-geocoder');
 const { loginCheckMiddleware } = require('../Middlewares/Auth');
 const multer = require("multer");
 
-const imageUploadPath = "C:/Users/seth1/Desktop/Project/client/public/event_imgs";
+const imageUploadPath = "C:/Users/88693/Documents/GitHub/Project_PB/public/event_imgs";
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         // console.log(imageUploadPath);
