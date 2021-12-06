@@ -54,8 +54,8 @@ router.get("/SingleCourse/:id", async (req, res) => {
 
 // 抓留言
 router.get("/comment", async (req, res) => {
-  let mainComment = await con.queryAsync("SELECT course_comment.*, user.first_name AS user_id ,user.image FROM course_comment JOIN user ON course_comment.user_id=user.id ORDER BY id DESC");
-  let sonComment = await con.queryAsync("SELECT response_comment.*, user.first_name AS user_id ,user.image FROM response_comment JOIN user ON response_comment.user_id=user.id");
+  let mainComment = await con.queryAsync("SELECT course_comment.*, user.last_name AS user_id ,user.image FROM course_comment JOIN user ON course_comment.user_id=user.id ORDER BY id DESC");
+  let sonComment = await con.queryAsync("SELECT response_comment.*, user.last_name AS user_id ,user.image FROM response_comment JOIN user ON response_comment.user_id=user.id");
   let allComment = [...mainComment,sonComment]
   res.json(allComment);
 });
@@ -131,6 +131,17 @@ router.post('/addViews',async (req,res)=>{
   let addViews = await con.queryAsync("UPDATE course SET views=? WHERE id=?",[views,course_id]);
   res.json(course_id,views,'修改好了')
 })
+
+//取得三個相關類別的熱門商品
+router.post("/topThreeProduct", async (req, res) => {
+  let bodyPart = req.body.bodyPartId;
+  let result = await con.queryAsync(
+    "SELECT product.*,product_images.name AS image FROM product INNER JOIN product_images ON product.id = product_images.product_id WHERE body_part_id=? AND is_main=1 ORDER BY sold DESC LIMIT 3",[bodyPart]
+  );
+  console.log(req.body.bodyPartId)
+  res.json(result);
+});
+
 
 // 選擇特定部位最高like(啟學新增)
 router.get("/part-best/:partid", async (req, res) => {
