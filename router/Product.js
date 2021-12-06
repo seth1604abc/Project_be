@@ -19,6 +19,13 @@ router.get("/images/:productId", async (req, res) => {
 });
 
 
+//取得三個相關部位類別的熱門商品
+router.get("/recommand-product/:part/:productId", async (req, res) => {
+  let result = await con.queryAsync(
+    "SELECT * FROM product INNER JOIN product_images ON product.id = product_images.product_id WHERE product_type_id=? AND is_main=1 AND product.id <>? ORDER BY sold DESC LIMIT 3",[req.params.part,req.params.productId]
+  );
+  res.json(result);
+});
 //取得三個相關類別的熱門商品
 router.get("/recommand-product/:category/:productId", async (req, res) => {
   let result = await con.queryAsync(
