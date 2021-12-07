@@ -33,7 +33,7 @@ router.post("/", async (req, res) => {
         {
             from: data.name,
             to: `${data.giftName} <${data.giftEmail}>`,
-            subject: 'Hi',
+            subject: 'P&B禮物卡',
             html: `<h1>致: ${data.giftName}</h1><pre>${data.giftMessage}</pre><p>附上禮物碼: ${result}</p><h3>寄件人: ${data.name}</h3>`
         },
         function(err) {
