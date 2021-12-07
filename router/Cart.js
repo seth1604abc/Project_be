@@ -68,8 +68,9 @@ router.delete("/delete-selected", async (req, res) => {
   // console.log(data);
 console.log(data);
   let result = await con.queryAsync(
-    `DELETE FROM cart WHERE product_id IN (${data}) AND user_id=?`,[data,id]
+    `DELETE FROM cart WHERE product_id IN (?) AND user_id=?`,[data,id]
   );
+  console.log(result)
   res.json(result);
 });
 

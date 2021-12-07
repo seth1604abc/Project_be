@@ -6,7 +6,7 @@ const multer = require('multer');
 const { loginCheckMiddleware } = require('../Middlewares/Auth');
 
 
-const imageUploadPath = "C:/Users/seth1/Desktop/Project/client/public/image";
+const imageUploadPath = "C:/Users/88693/Documents/GitHub/Project_PB/public/image";
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         // console.log(imageUploadPath);
@@ -162,7 +162,7 @@ router.post("/event-delete", async (req, res) => {
     let id = req.session.userId;
     let eventId = req.body.id;
     let result = await con.queryAsync("DELETE FROM event_list WHERE user_id=? AND event_id=?", [id, eventId]);
-    console.log(result);
+    res.send(result);
 })
 
 router.post("/rate-check", async (req, res) => {

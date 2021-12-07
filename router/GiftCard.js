@@ -18,6 +18,7 @@ router.post("/", async (req, res) => {
     for (let i = 0; i < 10; i++) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }   
+    console.log(req.body);
     const data = req.body;
     let response = await con.queryAsync("INSERT INTO giftcard (user_id, code, usable_email) VALUES (?, ?, ?)", [1, result, data.giftEmail])
     
@@ -32,7 +33,7 @@ router.post("/", async (req, res) => {
         {
             from: data.name,
             to: `${data.giftName} <${data.giftEmail}>`,
-            subject: 'Hi',
+            subject: 'P&B禮物卡',
             html: `<h1>致: ${data.giftName}</h1><pre>${data.giftMessage}</pre><p>附上禮物碼: ${result}</p><h3>寄件人: ${data.name}</h3>`
         },
         function(err) {
@@ -40,6 +41,7 @@ router.post("/", async (req, res) => {
                 console.log(err);
             } else {
                 console.log("success");
+                res.send("success")
             }
         }
     )
