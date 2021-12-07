@@ -64,8 +64,6 @@ router.delete("/delete/:productId", async (req, res) => {
 router.delete("/delete-selected", async (req, res) => {
   let id = req.session.userId;
   let data = req.body.items;
-  
-  
   // console.log(typeof data);
   // console.log(data);
 console.log(data);
