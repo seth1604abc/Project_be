@@ -162,7 +162,7 @@ router.post("/event-delete", async (req, res) => {
     let id = req.session.userId;
     let eventId = req.body.id;
     let result = await con.queryAsync("DELETE FROM event_list WHERE user_id=? AND event_id=?", [id, eventId]);
-    console.log(result);
+    res.send(result);
 })
 
 router.post("/rate-check", async (req, res) => {
