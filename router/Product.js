@@ -106,13 +106,13 @@ router.get("/comments-number/:productId",async(req,res)=>{
 //商品單獨頁留言
 router.get("/comments/:productId",async(req,res)=>{
   let id = req.session.userId;
-  let result=await con.queryAsync("SELECT * FROM product_comment INNER JOIN user ON product_comment.user_id=user.id WHERE product_id=? ORDER BY created_at ASC LIMIT 3",[req.params.productId])
+  let result=await con.queryAsync("SELECT * FROM product_comment INNER JOIN user ON product_comment.user_id=user.id WHERE product_id=? ORDER BY created_at DESC LIMIT 3",[req.params.productId])
   res.json(result);
 })
 //商品單獨頁更多留言
 router.get("/comment/:productId/:exist",async(req,res)=>{
   let id = req.session.userId;
-  let result=await con.queryAsync(`SELECT * FROM product_comment INNER JOIN user ON product_comment.user_id=user.id WHERE product_id=? ORDER BY created_at ASC LIMIT ${req.params.exist} ,3`,[req.params.productId])
+  let result=await con.queryAsync(`SELECT * FROM product_comment INNER JOIN user ON product_comment.user_id=user.id WHERE product_id=? ORDER BY created_at DESC LIMIT ${req.params.exist} ,3`,[req.params.productId])
   res.json(result);
 })
 //商品單獨頁文章
