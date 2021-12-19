@@ -9,10 +9,11 @@ const moment = require('moment');
 const videoUploadPath = "C:/Users/88693/Documents/GitHub/Project_PB/public/videos";
 const imageUploadPath = "C:/Users/88693/Documents/GitHub/Project_PB/public/images";
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
+    destination: function (request, file, cb) {
         if(file.mimetype == "video/mp4"){
             cb(null, videoUploadPath);
         } else {
+            console.log(file);
             cb(null, imageUploadPath);
         }
         
@@ -94,14 +95,14 @@ router.get("/select-info", async (req, res) => {
 })
 
 router.post("/new-course", videoUpload.fields([{name: "video"}, {name: "image"}]), async (req, res) => {
-    let id = req.session.userId;
+    let id = req.session.userId;        
     let now = await moment().format("YYYY-MM-DD hh:mm:ss")    
     let duration = await getVideoDurationInSeconds(`C:/Users/88693/Documents/GitHub/Project_PB/public/videos/${req.files.video[0].originalname}`)
     duration = Math.floor(duration);
     duration = await moment(duration, "ss").format("mm:ss");
     let filename = req.files.video[0].originalname;    
-    filename = filename.split(".");
-    let result = await con.queryAsync("INSERT INTO course (title, upload_time, user_id, body_part_id, duration, level_id, filename, detail) VALUES (?,?,?,?,?,?,?,?)", [req.body.title, now, id, req.body.body_part, duration, req.body.level, filename[0], req.body.content]);
+    filename = filename.split(".");    
+    let result = await con.queryAsync("INSERT INTO course (title, upload_time, user_id, body_part_id, duration, level_id, filename, detail) VALUES (?,?,?,?,?,?,?,?)", [req.body.title, now, id, req.body.body_part, duration, req.body.level, filename[0], req.body.content]);    
     res.send("成功建立課程");    
 })
 
